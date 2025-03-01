@@ -1,0 +1,79 @@
+:root {
+  font-family: Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  background-color: #e962c5;
+  color-scheme: light dark;
+  color: #fff;
+  background-size: cover auto;
+  background-blend-mode: multiply;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+a {
+  font-weight: 500;
+  color: #f363c3;
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: #f460c2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background-image: url('/Food Truck Favorites_files/awning.png');
+  background-repeat: repeat-x;
+  background-position: top;
+  background-color: #f285c3;
+}
+
+h1 {
+  font-size: 75px;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: .6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #cc0606;
+  cursor: pointer;
+  transition: border-color .25s;
+}
+
+button:hover {
+  border-color: #ff64c9;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #fff;
+  }
+  
+  a:hover {
+    color: #ee6db9;
+  }
+  
+  button {
+    background-color: #f9f9f9;
+  }
+}

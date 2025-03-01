@@ -1,0 +1,82 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.App {
+  margin-left: 60px;
+  margin-right: 60px;
+  color: #000;
+}
+
+h1 {
+  color: #fff;
+  font-size: 80px;
+  text-shadow: black 1px 0 10px;
+  padding-bottom: 18px;
+  margin-left: 50px;
+}
+
+.container {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #ee5495aa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #fa4fd5aa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+/* Remove or rename this class to avoid conflicts with Card.css */
+/* .card {
+  padding: 2em;
+} */
+
+.read-the-docs {
+  color: #888;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    justify-content: center;
+  }
+  
+  h1 {
+    font-size: 50px;
+    margin-left: 0;
+  }
+  
+  .App {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
