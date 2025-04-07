@@ -10,6 +10,15 @@ const Calendar = () => {
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const [selectedYear, setSelectedYear] = useState(currentYear);
   
+  // State for event form
+  const [showEventForm, setShowEventForm] = useState(false);
+  const [newEvent, setNewEvent] = useState({
+    title: '',
+    date: today.toISOString().substr(0, 10), // Format as YYYY-MM-DD
+    location: '',
+    urgency: 'medium'
+  });
+  
   // Sample task data with dates
   const [events, setEvents] = useState([
     { 
@@ -43,6 +52,51 @@ const Calendar = () => {
       urgency: 'low' 
     }
   ]);
+  
+  // Add new event
+  const handleAddEvent = (e) => {
+    e.preventDefault();
+    
+    if (!newEvent.title.trim()) {
+      alert('Please enter an event title');
+      return;
+    }
+    
+    const eventDate = new Date(newEvent.date);
+    const highestId = Math.max(...events.map(event => event.id), 0);
+    
+    const eventToAdd = {
+      id: highestId + 1,
+      title: newEvent.title,
+      date: eventDate,
+      location: newEvent.location,
+      urgency: newEvent.urgency
+    };
+    
+    setEvents([...events, eventToAdd]);
+    
+    // Reset form and hide it
+    setNewEvent({
+      title: '',
+      date: today.toISOString().substr(0, 10),
+      location: '',
+      urgency: 'medium'
+    });
+    setShowEventForm(false);
+    
+    // Update view to show the month of the new event
+    setSelectedMonth(eventDate.getMonth());
+    setSelectedYear(eventDate.getFullYear());
+  };
+  
+  // Handle input changes for new event
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewEvent({
+      ...newEvent,
+      [name]: value
+    });
+  };
   
   // Month names
   const monthNames = [
@@ -127,7 +181,88 @@ const Calendar = () => {
   
   return (
     <div className="calendar-container">
-      <h2>Task Calendar</h2>
+      <div className="calendar-header-container">
+        <h2>Task Calendar</h2>
+        <button 
+          className="add-event-button"
+          onClick={() => setShowEventForm(true)}
+        >
+          Add Event
+        </button>
+      </div>
+      
+      {/* Event Form Modal */}
+      {showEventForm && (
+        <div className="event-form-overlay">
+          <div className="event-form-modal">
+            <h3>Add New Event</h3>
+            <form onSubmit={handleAddEvent}>
+              <div className="form-group">
+                <label htmlFor="event-title">Event Name:</label>
+                <input
+                  id="event-title"
+                  type="text"
+                  name="title"
+                  value={newEvent.title}
+                  onChange={handleInputChange}
+                  placeholder="Enter event title"
+                  required
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="event-date">Date:</label>
+                <input
+                  id="event-date"
+                  type="date"
+                  name="date"
+                  value={newEvent.date}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="event-location">Location:</label>
+                <input
+                  id="event-location"
+                  type="text"
+                  name="location"
+                  value={newEvent.location}
+                  onChange={handleInputChange}
+                  placeholder="Enter event location"
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="event-urgency">Priority:</label>
+                <select
+                  id="event-urgency"
+                  name="urgency"
+                  value={newEvent.urgency}
+                  onChange={handleInputChange}
+                >
+                  <option value="critical">Critical</option>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+              </div>
+              
+              <div className="form-actions">
+                <button type="submit" className="save-event-btn">Add Event</button>
+                <button 
+                  type="button" 
+                  className="cancel-event-btn"
+                  onClick={() => setShowEventForm(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       
       <div className="calendar-header">
         <button onClick={prevMonth} className="calendar-nav-button">

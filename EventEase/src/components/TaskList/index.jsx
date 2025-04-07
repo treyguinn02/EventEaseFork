@@ -36,6 +36,10 @@ const TaskList = () => {
   const [newTaskCategory, setNewTaskCategory] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [slidePosition, setSlidePosition] = useState(0);
+  
+  // Add state for editing
+  const [editingTask, setEditingTask] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const toggleTaskCompletion = (categoryId, taskId) => {
     setCategories(categories.map(category => {
@@ -89,6 +93,56 @@ const TaskList = () => {
     setSlidePosition(prev => Math.min(prev + 1, 0));
   };
 
+  // Handle deleting a task
+  const handleDeleteTask = (categoryId, taskId) => {
+    setCategories(categories.map(category => {
+      if (category.id === categoryId) {
+        return {
+          ...category,
+          tasks: category.tasks.filter(task => task.id !== taskId)
+        };
+      }
+      return category;
+    }));
+  };
+
+  // Open edit modal with task data
+  const handleEditTask = (categoryId, task) => {
+    setEditingTask({
+      categoryId,
+      ...task
+    });
+    setShowEditModal(true);
+  };
+
+  // Save edited task
+  const saveEditedTask = () => {
+    if (!editingTask.text.trim()) return;
+    
+    setCategories(categories.map(category => {
+      if (category.id === editingTask.categoryId) {
+        return {
+          ...category,
+          tasks: category.tasks.map(task => {
+            if (task.id === editingTask.id) {
+              return {
+                id: task.id,
+                text: editingTask.text,
+                completed: task.completed,
+                priority: editingTask.priority
+              };
+            }
+            return task;
+          })
+        };
+      }
+      return category;
+    }));
+    
+    setShowEditModal(false);
+    setEditingTask(null);
+  };
+
   // Filter tasks based on selected category
   const filteredCategories = selectedCategory === 'all' 
     ? categories 
@@ -139,6 +193,8 @@ const TaskList = () => {
                       key={task.id}
                       task={task}
                       onToggle={() => toggleTaskCompletion(category.id, task.id)}
+                      onEdit={() => handleEditTask(category.id, task)}
+                      onDelete={() => handleDeleteTask(category.id, task.id)}
                     />
                   ))}
                 </div>
@@ -155,6 +211,38 @@ const TaskList = () => {
           &gt;
         </button>
       </div>
+      
+      {/* Edit Task Modal */}
+      {showEditModal && (
+        <div className="task-modal-overlay">
+          <div className="task-modal">
+            <h3>Edit Task</h3>
+            <div className="form-group">
+              <label>Task Description:</label>
+              <input
+                type="text"
+                value={editingTask.text}
+                onChange={(e) => setEditingTask({...editingTask, text: e.target.value})}
+              />
+            </div>
+            <div className="form-group">
+              <label>Priority:</label>
+              <select
+                value={editingTask.priority}
+                onChange={(e) => setEditingTask({...editingTask, priority: e.target.value})}
+              >
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+            <div className="modal-actions">
+              <button onClick={saveEditedTask} className="save-btn">Save Changes</button>
+              <button onClick={() => setShowEditModal(false)} className="cancel-btn">Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
       
       <div className="add-task-form">
         <h3>Add New Task</h3>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './styles.css';
 
-const TodoItem = ({ task, onToggle }) => {
+const TodoItem = ({ task, onToggle, onEdit, onDelete }) => {
   const [isHovered, setIsHovered] = useState(false);
   
   const getPriorityClass = () => {
@@ -44,10 +44,10 @@ const TodoItem = ({ task, onToggle }) => {
       
       {isHovered && (
         <div className="todo-actions">
-          <button className="action-button edit">
+          <button className="action-button edit" onClick={() => onEdit(task)}>
             <i className="icon">✏️</i>
           </button>
-          <button className="action-button delete">
+          <button className="action-button delete" onClick={() => onDelete(task.id)}>
             <i className="icon">🗑️</i>
           </button>
         </div>
