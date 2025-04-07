@@ -12,6 +12,7 @@ const userSchema = new Schema({
   username: {
     type: String,
     required: true,
+    unique: true,
     trim: true
   },
   email: {
@@ -20,16 +21,16 @@ const userSchema = new Schema({
     unique: true,
     trim: true
   },
-  password: {
+  fullName: {
     type: String,
-    required: true
+    trim: true
   },
-  profilePicture: String,
   role: {
     type: String,
-    enum: ['Admin', 'Member', 'Guest'],
-    default: 'Member'
+    enum: ['user', 'admin'],
+    default: 'user'
   },
+  avatar: String,
   createdAt: {
     type: Date,
     default: Date.now
@@ -71,7 +72,7 @@ const projectSchema = new Schema({
     },
     role: {
       type: String,
-      enum: ['Owner', 'Admin', 'Member'],
+      enum: ['Owner', 'Admin', 'Member', 'Viewer'],
       default: 'Member'
     },
     joinedAt: {
@@ -81,8 +82,8 @@ const projectSchema = new Schema({
   }],
   status: {
     type: String,
-    enum: ['Active', 'Completed', 'On Hold', 'Cancelled'],
-    default: 'Active'
+    enum: ['active', 'archived', 'completed'],
+    default: 'active'
   }
 });
 
@@ -95,8 +96,7 @@ const messageSchema = new Schema({
   },
   userId: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: 'User'
   },
   text: {
     type: String,
@@ -145,12 +145,12 @@ const taskSchema = new Schema({
   dueDate: Date,
   status: {
     type: String,
-    enum: ['pending', 'in-progress', 'completed'],
+    enum: ['pending', 'in-progress', 'review', 'completed'],
     default: 'pending'
   },
   priority: {
     type: String,
-    enum: ['low', 'medium', 'high'],
+    enum: ['low', 'medium', 'high', 'urgent'],
     default: 'medium'
   },
   tags: [String]
@@ -251,7 +251,7 @@ const milestoneSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['planned', 'completed', 'delayed'],
+    enum: ['planned', 'in-progress', 'completed', 'overdue'],
     default: 'planned'
   },
   createdBy: {
@@ -278,6 +278,40 @@ const milestoneSchema = new Schema({
   }
 });
 
+// Guest Collection Schema
+const guestSchema = new Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  phone: String,
+  projectId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Project',
+    required: true
+  },
+  status: {
+    type: String,
+    enum: ['invited', 'accepted', 'declined', 'tentative'],
+    default: 'invited'
+  },
+  invitedBy: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  invitedAt: {
+    type: Date,
+    default: Date.now
+  },
+  responseDate: Date,
+  specialRequirements: String,
+  notes: String
+});
+
 // Create models
 const User = mongoose.model('User', userSchema);
 const Project = mongoose.model('Project', projectSchema);
@@ -286,6 +320,7 @@ const Task = mongoose.model('Task', taskSchema);
 const File = mongoose.model('File', fileSchema);
 const Note = mongoose.model('Note', noteSchema);
 const Milestone = mongoose.model('Milestone', milestoneSchema);
+const Guest = mongoose.model('Guest', guestSchema);
 
 // Export all models
 module.exports = {
@@ -295,5 +330,6 @@ module.exports = {
   Task,
   File,
   Note,
-  Milestone
+  Milestone,
+  Guest
 };
