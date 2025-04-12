@@ -10,6 +10,22 @@ const Navbar = ({ activeTab, setActiveTab, projectName, projects, onProjectChang
     endDate: '',
     summary: ''
   });
+  const handleSignOut = () => {
+    // Disable the sign-out button immediately
+    const signOutBtn = document.querySelector('.sign-out-btn');
+    if (signOutBtn) {
+      signOutBtn.disabled = true;
+      signOutBtn.textContent = 'Signing out...';
+    }
+
+    // Clear user data from localStorage
+    localStorage.removeItem('user');
+    
+    // Add a 2-second delay before reloading
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+  };
   
   const handleNavClick = (tab) => {
     setActiveTab(tab);
@@ -153,30 +169,36 @@ const Navbar = ({ activeTab, setActiveTab, projectName, projects, onProjectChang
         <li 
           className={activeTab === 'Calendar' ? 'active' : ''} 
           onClick={() => handleNavClick('Calendar')}
-        >
-          <a href="#calendar">Calendar</a>
-        </li>
-        <li 
+        >          <a href="#Calendar">Calendar</a>
+        </li><li 
           className={activeTab === 'Tasks' ? 'active' : ''} 
           onClick={() => handleNavClick('Tasks')}
         >
-          <a href="#tasks">Tasks</a>
+          <a href="#Tasks">Tasks</a>
         </li>
         <li 
           className={activeTab === 'Collaboration' ? 'active' : ''} 
           onClick={() => handleNavClick('Collaboration')}
         >
-          <a href="#collaboration">Collaboration</a>
+          <a href="#Collaboration">Collaboration</a>
         </li>
         <li 
           className={activeTab === 'Guests' ? 'active' : ''} 
           onClick={() => handleNavClick('Guests')}
+        >          <a href="#Guests">Guests</a>
+        </li>      </ul>
+      <div className="user-actions">
+        <button 
+          className="user-profile-btn"
+          onClick={() => handleNavClick('Profile')}
         >
-          <a href="#guests">Guests</a>
-        </li>
-      </ul>
-    </nav>
-  );
+          Profile
+        </button>
+        <button onClick={handleSignOut} className="sign-out-btn">
+          Sign Out
+        </button>
+      </div>
+    </nav>  );
 };
 
 export default Navbar;

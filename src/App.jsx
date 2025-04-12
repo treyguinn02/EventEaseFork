@@ -7,10 +7,16 @@ import TaskList from './components/TaskList';
 import Collaboration from './components/Collaboration';
 import GuestManagement from './components/GuestManagement';
 import Login from './components/Login';
+import User from './components/User';
 import { projectService, taskService } from './services/api';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('Home');
+  // Initialize activeTab based on URL hash
+  const [activeTab, setActiveTab] = useState(() => {
+    const hash = window.location.hash.slice(1);
+    return hash || 'Home';
+  });
+
   const [tasks, setTasks] = useState([]);
   const [events, setEvents] = useState([]);
   const [activeProject, setActiveProject] = useState(null);
@@ -178,6 +184,64 @@ function App() {
     }
   };
 
+  // Add task management functions
+  const addTask = async (taskText) => {
+    try {
+      if (!activeProject || !taskText.trim()) return;
+      
+      const taskData = {
+        projectId: activeProject._id,
+        text: taskText,
+        status: 'pending',
+        priority: 'medium',
+        dueDate: null
+      };
+      
+      const response = await taskService.create(taskData);
+      const newTask = response.data;
+      
+      setTasks([
+        ...tasks,
+        {
+          id: newTask._id,
+          text: newTask.text,
+          completed: false,
+          status: newTask.status,
+          priority: newTask.priority,
+          dueDate: newTask.dueDate
+        }
+      ]);
+    } catch (error) {
+      console.error('Error adding task:', error);
+    }
+  };
+
+  const toggleTask = async (taskId) => {
+    try {
+      const task = tasks.find(t => t.id === taskId);
+      if (!task) return;
+      
+      const newStatus = task.completed ? 'pending' : 'completed';
+      await taskService.updateStatus(taskId, newStatus);
+      
+      setTasks(tasks.map(task => 
+        task.id === taskId 
+          ? { ...task, completed: !task.completed, status: newStatus } 
+          : task
+      ));
+    } catch (error) {
+      console.error('Error toggling task:', error);
+    }
+  };
+
+  const deleteTask = async (taskId) => {
+    try {
+      await taskService.delete(taskId);
+      setTasks(tasks.filter(task => task.id !== taskId));
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
+  };
   // Render the appropriate content based on the active tab
   const renderContent = () => {
     switch (activeTab) {
@@ -193,13 +257,19 @@ function App() {
             onToggleTask={toggleTask}
             onDeleteTask={deleteTask}
           />
-        );
-      case 'Collaboration':
+        );      case 'Collaboration':
         return <Collaboration />;
       case 'Guests':
-        return <GuestManagement />;
+        return <GuestManagement 
+          guests={guests}
+          onAddGuest={addGuest}
+          onDeleteGuest={deleteGuest}
+          onUpdateGuestStatus={updateGuestStatus}
+        />;
+      case 'Profile':
+        return <User userData={user} />;
       default:
-        return <Home />;
+        return <Home setActiveTab={setActiveTab}/>;
     }
   };
 
