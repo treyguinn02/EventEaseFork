@@ -3,33 +3,70 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: #f9f9f9;
-  border-radius: 12px;
+  background-color: #f8fafc;
+  background-image: linear-gradient(to bottom right, rgba(248, 250, 252, 0.8), rgba(255, 255, 255, 1));
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08), 0 5px 15px rgba(0,0,0,0.04);
   max-width: 1600px;
   margin: 0 auto;
+  border: 1px solid rgba(235, 238, 242, 0.9);
+  transition: all 0.4s ease;
 }
 
 .collaboration-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 32px;
-  background-color: #fff;
-  border-bottom: 1px solid #eaeaea;
+  padding: 26px 40px;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(235, 238, 242, 0.9);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  position: relative;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .collaboration-header h2 {
   margin: 0;
-  color: #333;
-  font-size: 1.5rem;
+  color: #1e293b;
+  font-size: 1.7rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #4caf50, #2196f3);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.04);
+  animation: gradient-shift 8s ease infinite;
+  background-size: 200% 200%;
 }
 
 .user-info {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+  background-color: rgba(248, 250, 252, 0.9);
+  padding: 10px 18px;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+  border: 1px solid rgba(235, 238, 242, 0.9);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+.user-info:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
 }
 
 .active-indicator {
@@ -38,15 +75,24 @@
   height: 10px;
   background-color: #4caf50;
   border-radius: 50%;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+  position: relative;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(76, 175, 80, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
 }
 
 .username-input {
-  padding: 8px 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
+  padding: 10px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
   font-size: 14px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  background-color: white;
 }
 
 .username-input:focus {
@@ -201,21 +247,33 @@
 
 .messages-container {
   flex: 1;
-  padding: 20px;
+  padding: 24px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
+  background-color: #f9fafc;
+  background-image: 
+    radial-gradient(at 20% 20%, rgba(76, 175, 80, 0.03) 0px, transparent 50%),
+    radial-gradient(at 80% 80%, rgba(33, 150, 243, 0.03) 0px, transparent 50%);
 }
 
 .message {
   max-width: 80%;
-  padding: 14px 18px;
-  border-radius: 12px;
-  background-color: #f5f5f5;
+  padding: 16px 20px;
+  border-radius: 18px 18px 18px 4px;
+  background-color: #f3f4f6;
   align-self: flex-start;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
   animation: slideInLeft 0.3s ease;
+  border: 1px solid rgba(235, 238, 242, 0.8);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.message:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
 }
 
 @keyframes slideInLeft {
@@ -230,8 +288,11 @@
 
 .message.own-message {
   background-color: #e8f5e9;
+  background-image: linear-gradient(135deg, #e8f5e9 0%, #d7f9db 100%);
   align-self: flex-end;
+  border-radius: 18px 18px 4px 18px;
   animation: slideInRight 0.3s ease;
+  border: 1px solid rgba(200, 230, 201, 0.5);
 }
 
 .message-header {
@@ -258,37 +319,52 @@
 
 .message-input-form {
   display: flex;
-  padding: 16px 20px;
+  padding: 18px 24px;
   border-top: 1px solid #eaeaea;
-  background-color: #fff;
+  background-color: #ffffff;
+  position: relative;
+  z-index: 5;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.03);
 }
 
 .message-input {
   flex: 1;
-  padding: 14px;
+  padding: 16px;
   border: 1px solid #e0e0e0;
-  border-radius: 8px 0 0 8px;
-  font-size: 14px;
-  transition: all 0.2s ease;
+  border-radius: 24px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+  margin-right: 12px;
 }
 
 .message-input:focus {
   border-color: #4caf50;
   outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+  background-color: #ffffff;
 }
 
 .send-button {
-  padding: 0 24px;
+  width: 48px;
+  height: 48px;
   background-color: #4caf50;
+  background-image: linear-gradient(135deg, #4caf50, #43a047);
   color: white;
   border: none;
-  border-radius: 0 8px 8px 0;
+  border-radius: 50%;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 8px rgba(76, 175, 80, 0.3);
 }
 
 .send-button:hover {
   background-color: #43a047;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(76, 175, 80, 0.4);
 }
 
 /* Right sidebar styling */

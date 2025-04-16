@@ -121,10 +121,9 @@ const GuestManagement = ({ guests, onAddGuest, onDeleteGuest, onUpdateGuestStatu
               <th>Status</th>
               <th>Actions</th>
             </tr>
-          </thead>
-          <tbody>
+          </thead>          <tbody>
             {guests.map(guest => (
-              <tr key={guest.id}>
+              <tr key={guest.id} className={`guest-row status-${guest.status}`}>
                 <td>{guest.name}</td>
                 <td>{guest.email}</td>
                 <td>

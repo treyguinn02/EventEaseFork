@@ -97,7 +97,19 @@ export const userService = {
   getById: (id) => api.get(`/users/${id}`),
   create: (userData) => api.post('/users', userData),
   update: (id, userData) => api.put(`/users/${id}`, userData),
-  delete: (id) => api.delete(`/users/${id}`)
+  delete: (id) => api.delete(`/users/${id}`),
+  // New profile management functions
+  updateProfile: (profileData) => api.put(`/users/${profileData.id}/profile`, profileData),
+  updateSettings: (settingsData) => api.put(`/users/${settingsData.id}/settings`, settingsData),
+  deleteAccount: (id) => api.delete(`/users/${id}/account`),
+  uploadAvatar: (formData) => {
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    };
+    return api.post('/users/avatar', formData, config);
+  }
 };
 
 export const projectService = {
