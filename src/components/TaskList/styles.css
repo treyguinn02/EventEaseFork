@@ -14,32 +14,26 @@
   flex-wrap: wrap;
 }
 
-/* General Button Styles */
-button {
-  padding: 12px 18px; /* Consistent padding */
-  border-radius: 9999px; /* Fully rounded corners */
-  border: none; /* Remove borders */
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition, 0.3s ease-in-out); /* Smooth transitions */
-}
-
-/* Category Filter Buttons */
 .category-filter button {
-  background: #f1f5f9; /* Light background */
-  color: #64748b; /* Neutral text color */
-  box-shadow: var(--shadow, 0 2px 5px rgba(0, 0, 0, 0.1)); /* Subtle shadow */
+  padding: 10px 20px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  color: #64748b;
 }
 
 .category-filter button:hover {
-  background: #e0f7fa; /* Light hover effect */
-  color: #000; /* Darker text on hover */
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
 }
 
 .category-filter button.active {
-  background: linear-gradient(120deg, var(--primary, #4caf50), var(--secondary, #3b82f6)); /* Gradient background */
-  color: white; /* White text */
-  box-shadow: var(--shadow, 0 4px 10px rgba(0, 0, 0, 0.2)); /* Stronger shadow */
+  background-color: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
 }
 
 .task-slider-container {
@@ -50,22 +44,23 @@ button {
 }
 
 .slider-button {
-  background: linear-gradient(120deg, var(--primary, #4caf50), var(--primary-dark, #388e3c)); /* Gradient background */
+  background-color: #4caf50;
   color: white;
-  border-radius: 50%; /* Fully rounded */
-  width: 48px; /* Match the size of the send button */
-  height: 48px;
-  box-shadow: var(--shadow, 0 4px 10px rgba(0, 0, 0, 0.2)); /* Subtle shadow */
-  transition: var(--transition, 0.3s ease-in-out);
-}
-
-.slider-button:hover {
-  transform: scale(1.1); /* Slight scaling on hover */
-  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3); /* Stronger shadow on hover */
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .slider-button:disabled {
-  background: #cccccc; /* Disabled state */
+  background-color: #cccccc;
   cursor: not-allowed;
 }
 
@@ -158,19 +153,18 @@ button {
 }
 
 .add-task-form button {
-  background: linear-gradient(120deg, var(--primary, #4caf50), var(--primary-dark, #388e3c)); /* Gradient background */
+  padding: 10px 20px;
+  background-color: #4caf50;
   color: white;
-  border-radius: 9999px; /* Fully rounded corners */
-  padding: 12px 18px; /* Consistent padding */
-  font-weight: 500;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
-  transition: var(--transition, 0.3s ease-in-out);
-  box-shadow: var(--shadow, 0 4px 10px rgba(0, 0, 0, 0.2)); /* Subtle shadow */
+  font-weight: 500;
+  transition: background-color 0.3s ease;
 }
 
 .add-task-form button:hover {
-  transform: scale(1.1); /* Slight scaling on hover */
-  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3); /* Stronger shadow on hover */
+  background-color: #388e3c;
 }
 
 @media (max-width: 768px) {
@@ -264,33 +258,11 @@ button {
 }
 
 .save-btn {
-  background: linear-gradient(120deg, var(--primary, #4caf50), var(--primary-dark, #388e3c)); /* Gradient background */
+  background-color: #4caf50;
   color: white;
-  border-radius: 9999px; /* Fully rounded corners */
-  padding: 10px 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition, 0.3s ease-in-out);
-  box-shadow: var(--shadow, 0 4px 10px rgba(0, 0, 0, 0.2)); /* Subtle shadow */
-}
-
-.save-btn:hover {
-  transform: scale(1.1); /* Slight scaling on hover */
-  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3); /* Stronger shadow on hover */
 }
 
 .cancel-btn {
-  background: #f44336; /* Red background for cancel */
+  background-color: #f44336;
   color: white;
-  border-radius: 9999px; /* Fully rounded corners */
-  padding: 10px 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition, 0.3s ease-in-out);
-  box-shadow: var(--shadow, 0 4px 10px rgba(0, 0, 0, 0.2)); /* Subtle shadow */
-}
-
-.cancel-btn:hover {
-  transform: scale(1.1); /* Slight scaling on hover */
-  box-shadow: 0 8px 20px rgba(244, 67, 54, 0.3); /* Stronger shadow on hover */
 }
