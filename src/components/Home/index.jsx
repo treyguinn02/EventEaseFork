@@ -14,8 +14,7 @@ const Home = ({ setActiveTab }) => {
         <h1>Welcome to EventEase</h1>
         <p>Your all-in-one solution for event planning and management</p>
       </div>
-      
-      <div className="home-features">
+        <div className="home-features">
         <div className="feature-card">
           <span className="feature-emoji">📅</span>
           <button 
@@ -59,17 +58,17 @@ const Home = ({ setActiveTab }) => {
           </button>
           <p>Manage invitations, RSVPs, and guest information effortlessly</p>
         </div>
-      </div>
-      
-      <div className="home-cta">
-        <h2>Ready to get started?</h2>
-        <p>Select a project from the navigation bar or create a new one to begin planning your event.</p>
-        <button 
-          onClick={() => handleFeatureClick('Calendar')} 
-          className="get-started-btn"
-        >
-          Get Started
-        </button>
+        
+        <div className="feature-card">
+          <span className="feature-emoji">📚</span>
+          <button 
+            className="feature-button-heading" 
+            onClick={() => handleFeatureClick('Documentation')}
+          >
+            Documentation
+          </button>
+          <p>Access guides, tutorials, and support information for EventEase</p>
+        </div>
       </div>
     </div>
   );

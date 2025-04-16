@@ -93,22 +93,38 @@ api.interceptors.response.use(
 
 // Define API services for each entity
 export const userService = {
+  // Authentication endpoints
+  register: (userData) => api.post('/users/register', userData),
+  login: (credentials) => api.post('/users/login', credentials),
+  
+  // User profile endpoints
   getAll: () => api.get('/users'),
   getById: (id) => api.get(`/users/${id}`),
-  create: (userData) => api.post('/users', userData),
+  getCurrentUser: () => api.get('/users/me'),
   update: (id, userData) => api.put(`/users/${id}`, userData),
+  updateProfile: (profileData) => api.put(`/users/${profileData.id}`, profileData),
+  updateSettings: (settingsData) => api.put(`/users/${settingsData.id}/settings`, settingsData.settings),
+  changePassword: (id, passwordData) => api.put(`/users/${id}/password`, passwordData),
   delete: (id) => api.delete(`/users/${id}`),
-  // New profile management functions
-  updateProfile: (profileData) => api.put(`/users/${profileData.id}/profile`, profileData),
-  updateSettings: (settingsData) => api.put(`/users/${settingsData.id}/settings`, settingsData),
-  deleteAccount: (id) => api.delete(`/users/${id}/account`),
+  deleteAccount: (id) => api.delete(`/users/${id}`),
   uploadAvatar: (formData) => {
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     };
-    return api.post('/users/avatar', formData, config);
+    return api.post(`/users/${formData.get('userId')}/avatar`, formData, config);
+  },
+  
+  // Helper to set auth token for all requests
+  setAuthToken: (token) => {
+    if (token) {
+      api.defaults.headers.common['x-auth-token'] = token;
+      localStorage.setItem('token', token);
+    } else {
+      delete api.defaults.headers.common['x-auth-token'];
+      localStorage.removeItem('token');
+    }
   }
 };
 

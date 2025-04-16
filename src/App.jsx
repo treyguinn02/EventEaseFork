@@ -6,6 +6,7 @@ import Calendar from './components/Calendar';
 import TaskList from './components/TaskList';
 import Collaboration from './components/Collaboration';
 import GuestManagement from './components/GuestManagement';
+import Documentation from './components/Documentation';
 import Login from './components/Login';
 import User from './components/User';
 import { projectService, taskService } from './services/api';
@@ -241,12 +242,11 @@ function App() {
     } catch (error) {
       console.error('Error deleting task:', error);
     }
-  };
-  // Render the appropriate content based on the active tab
+  };  // Render the appropriate content based on the active tab
   const renderContent = () => {
     switch (activeTab) {
       case 'Home':
-        return <Home />;
+        return <Home setActiveTab={setActiveTab} />;
       case 'Calendar':
         return <Calendar events={events} />;
       case 'Tasks':
@@ -257,7 +257,8 @@ function App() {
             onToggleTask={toggleTask}
             onDeleteTask={deleteTask}
           />
-        );      case 'Collaboration':
+        );
+      case 'Collaboration':
         return <Collaboration />;
       case 'Guests':
         return <GuestManagement 
@@ -266,6 +267,8 @@ function App() {
           onDeleteGuest={deleteGuest}
           onUpdateGuestStatus={updateGuestStatus}
         />;
+      case 'Documentation':
+        return <Documentation />;
       case 'Profile':
         return <User userData={user} />;
       default:

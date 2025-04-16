@@ -21,7 +21,23 @@ const userSchema = new Schema({
     unique: true,
     trim: true
   },
+  password: {
+    type: String,
+    required: true
+  },
   fullName: {
+    type: String,
+    trim: true
+  },
+  phone: {
+    type: String,
+    trim: true
+  },
+  title: {
+    type: String,
+    trim: true
+  },
+  company: {
     type: String,
     trim: true
   },
@@ -31,6 +47,28 @@ const userSchema = new Schema({
     default: 'user'
   },
   avatar: String,
+  settings: {
+    emailNotifications: {
+      type: Boolean,
+      default: true
+    },
+    taskReminders: {
+      type: Boolean,
+      default: true
+    },
+    darkMode: {
+      type: Boolean,
+      default: false
+    },
+    calendarSync: {
+      type: Boolean,
+      default: false
+    },
+    language: {
+      type: String,
+      default: 'en'
+    }
+  },
   createdAt: {
     type: Date,
     default: Date.now
