@@ -8,6 +8,7 @@ import Collaboration from './components/Collaboration';
 import GuestManagement from './components/GuestManagement';
 import Documentation from './components/Documentation';
 import Login from './components/Login';
+import AccountCreation from './components/AccountCreation';
 import User from './components/User';
 import { projectService, taskService } from './services/api';
 
@@ -22,9 +23,9 @@ function App() {
   const [events, setEvents] = useState([]);
   const [activeProject, setActiveProject] = useState(null);
   const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null); // State to track the logged-in user
+  const [loading, setLoading] = useState(true);  const [user, setUser] = useState(null); // State to track the logged-in user
   const [usingMockData, setUsingMockData] = useState(false);
+  const [showAccountCreation, setShowAccountCreation] = useState(false); // State to track if account creation page is active
 
   // Add guests state for persistent guest management
   const [guests, setGuests] = useState([
@@ -275,17 +276,33 @@ function App() {
         return <Home setActiveTab={setActiveTab}/>;
     }
   };
-
-  // If the user is not logged in, show the Login screen
+  // If the user is not logged in, show the Login screen or Account Creation
   if (!user) {
-    return (
-      <Login
-        onLoginSuccess={(userData) => {
-          setUser(userData);
-          localStorage.setItem('user', JSON.stringify(userData)); // Persist login
-        }}
-      />
-    );
+    if (showAccountCreation) {
+      return (
+        <AccountCreation 
+          onAccountCreated={() => {
+            // After account creation, redirect to Home page by setting the user
+            // In a real app, you would save user data returned from your backend
+            const tempUserData = { profile: { name: 'New User' }, token: 'temp-token' };
+            setUser(tempUserData);
+            localStorage.setItem('user', JSON.stringify(tempUserData)); // Persist login
+            setActiveTab('Home');
+          }}
+          onCancel={() => setShowAccountCreation(false)} // Allow going back to login
+        />
+      );
+    } else {
+      return (
+        <Login
+          onLoginSuccess={(userData) => {
+            setUser(userData);
+            localStorage.setItem('user', JSON.stringify(userData)); // Persist login
+          }}
+          onSignup={() => setShowAccountCreation(true)} // Show account creation when signup is clicked
+        />
+      );
+    }
   }
 
   return (

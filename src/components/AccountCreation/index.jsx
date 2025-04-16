@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import './styles.css';
 
-const AccountCreation = () => {
+const AccountCreation = ({ onAccountCreated, onCancel }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
+  const [username, setUsername] = useState('');
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
+  };
+
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
@@ -19,14 +23,38 @@ const AccountCreation = () => {
   };
 
   const isPasswordMatch = password === confirmPassword;
-
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // Form validation
+    if (!username || !password || !isPasswordMatch) {
+      alert('Please fill all fields and make sure passwords match');
+      return;
+    }
+    
+    // In a real app, you would send this data to your backend
+    console.log('Account created with username:', username);
+    
+    // Call the callback to navigate to the Home page
+    if (onAccountCreated) {
+      onAccountCreated();
+    }
+  };
   return (
     <div className="account-creation-container">
       <h1>Create Your Account</h1>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="username">Username:</label>
-          <input type="text" id="username" name="username" required />
+          <input 
+            type="text" 
+            id="username" 
+            name="username" 
+            value={username}
+            onChange={handleUsernameChange}
+            required 
+          />
         </div>
         <div className="form-group">
           <label htmlFor="password">Password:</label>
@@ -80,14 +108,22 @@ const AccountCreation = () => {
             value={confirmPassword}
             onChange={handleConfirmPasswordChange}
             required
-          />
-          {!isPasswordMatch && confirmPassword && (
+          />          {!isPasswordMatch && confirmPassword && (
             <p className="error-message">Passwords do not match</p>
           )}
         </div>
-        <button type="submit" disabled={!isPasswordMatch}>
-          Create Account
-        </button>
+        <div className="form-actions">
+          <button type="submit" className="create-button" disabled={!isPasswordMatch}>
+            Create Account
+          </button>
+          <button 
+            type="button" 
+            className="cancel-button" 
+            onClick={onCancel}
+          >
+            Back to Login
+          </button>
+        </div>
       </form>
     </div>
   );
