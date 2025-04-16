@@ -5,13 +5,27 @@ const AccountCreation = ({ onAccountCreated, onCancel }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };
-
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
+  };
+
+  const handleFirstNameChange = (e) => {
+    setFirstName(e.target.value);
+  };
+
+  const handleLastNameChange = (e) => {
+    setLastName(e.target.value);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
@@ -21,14 +35,13 @@ const AccountCreation = ({ onAccountCreated, onCancel }) => {
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
   };
-
   const isPasswordMatch = password === confirmPassword;
   
   const handleSubmit = (e) => {
     e.preventDefault();
     
     // Form validation
-    if (!username || !password || !isPasswordMatch) {
+    if (!username || !password || !isPasswordMatch || !firstName || !lastName || !email) {
       alert('Please fill all fields and make sure passwords match');
       return;
     }
@@ -36,15 +49,59 @@ const AccountCreation = ({ onAccountCreated, onCancel }) => {
     // In a real app, you would send this data to your backend
     console.log('Account created with username:', username);
     
-    // Call the callback to navigate to the Home page
+    // Create user data object with profile information
+    const userData = {
+      name: `${firstName} ${lastName}`,
+      firstName,
+      lastName,
+      email,
+      username
+    };
+    
+    // Call the callback to navigate to the Home page with user data
     if (onAccountCreated) {
-      onAccountCreated();
+      onAccountCreated(userData);
     }
-  };
-  return (
+  };  return (
     <div className="account-creation-container">
       <h1>Create Your Account</h1>
       <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="firstName">First Name:</label>
+          <input 
+            type="text" 
+            id="firstName" 
+            name="firstName" 
+            value={firstName}
+            onChange={handleFirstNameChange}
+            required 
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="lastName">Last Name:</label>
+          <input 
+            type="text" 
+            id="lastName" 
+            name="lastName" 
+            value={lastName}
+            onChange={handleLastNameChange}
+            required 
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            value={email}
+            onChange={handleEmailChange}
+            required 
+          />
+        </div>
+        
         <div className="form-group">
           <label htmlFor="username">Username:</label>
           <input 

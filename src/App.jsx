@@ -275,18 +275,24 @@ function App() {
       default:
         return <Home setActiveTab={setActiveTab}/>;
     }
-  };
-  // If the user is not logged in, show the Login screen or Account Creation
+  };  // If the user is not logged in, show the Login screen or Account Creation
   if (!user) {
     if (showAccountCreation) {
       return (
         <AccountCreation 
-          onAccountCreated={() => {
-            // After account creation, redirect to Home page by setting the user
-            // In a real app, you would save user data returned from your backend
-            const tempUserData = { profile: { name: 'New User' }, token: 'temp-token' };
-            setUser(tempUserData);
-            localStorage.setItem('user', JSON.stringify(tempUserData)); // Persist login
+          onAccountCreated={(userData) => {
+            // After account creation, save user data and redirect to Home page
+            const userProfile = {
+              profile: {
+                name: userData.name,
+                given_name: userData.firstName,
+                family_name: userData.lastName,
+                email: userData.email
+              },
+              token: 'user-created-token'
+            };
+            setUser(userProfile);
+            localStorage.setItem('user', JSON.stringify(userProfile)); // Persist login
             setActiveTab('Home');
           }}
           onCancel={() => setShowAccountCreation(false)} // Allow going back to login
