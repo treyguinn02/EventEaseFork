@@ -2,7 +2,10 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan');
+const http = require('http');
+const socketIo = require('socket.io');
 const { connectDB } = require('./src/database/db');
+const { Messages } = require('./src/database/db');
 require('dotenv').config();
 
 // Import routes
@@ -16,6 +19,13 @@ const milestoneRoutes = require('./src/routes/milestone.routes');
 
 // Initialize Express app
 const app = express();
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: "*", // In production, you should restrict this to your app's domain
+    methods: ["GET", "POST"]
+  }
+});
 const PORT = process.env.PORT || 5000;
 
 // Middleware
@@ -55,12 +65,59 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+// WebSocket connection handling
+io.on('connection', (socket) => {
+  console.log('New client connected');
+  
+  // Handle joining a project room
+  socket.on('join_project', (projectId) => {
+    console.log(`Client joining project: ${projectId}`);
+    
+    // Leave all previous rooms
+    socket.rooms.forEach(room => {
+      if (room !== socket.id) {
+        socket.leave(room);
+      }
+    });
+    
+    // Join the new project room
+    socket.join(projectId);
+  });
+  
+  // Handle chat messages
+  socket.on('chat_message', async (messageData) => {
+    try {
+      console.log('Message received:', messageData);
+      
+      // Store message in database
+      const savedMessage = await Messages.create(messageData);
+      
+      // Broadcast message to all clients in the same project room
+      io.to(messageData.projectId).emit('new_message', {
+        id: savedMessage._id,
+        user: messageData.username || 'Unknown User',
+        text: messageData.text,
+        timestamp: new Date(),
+        projectId: messageData.projectId
+      });
+    } catch (error) {
+      console.error('Error handling message:', error);
+      socket.emit('error', { message: 'Failed to save message' });
+    }
+  });
+  
+  // Handle client disconnection
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
+});
+
 // Connect to MongoDB and start server
 const startServer = async () => {
   try {
     await connectDB();
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+    server.listen(PORT, () => {
+      console.log(`Server running on port ${PORT} with WebSocket support`);
     });
   } catch (error) {
     console.error('Could not start server:', error);

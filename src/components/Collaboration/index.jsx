@@ -8,6 +8,7 @@ import {
   fileService,
   milestoneService 
 } from '../../services/api';
+import websocketService from '../../services/websocket';
 
 const Collaboration = () => {
   // State for messages, projects, tasks, etc.
@@ -32,6 +33,9 @@ const Collaboration = () => {
   const [newFileName, setNewFileName] = useState('');
   const [fileUploadError, setFileUploadError] = useState('');
 
+  // WebSocket connection status
+  const [wsConnected, setWsConnected] = useState(false);
+  
   // State for milestones
   const [milestones, setMilestones] = useState([]);
   const [showAddMilestoneForm, setShowAddMilestoneForm] = useState(false);
@@ -54,9 +58,42 @@ const Collaboration = () => {
   // Fetch projects on component mount
   useEffect(() => {
     fetchProjects();
+
+    // Initialize WebSocket connection
+    websocketService.connect();
+    
+    // Set up WebSocket event listeners
+    const connectionStatusListener = (status) => {
+      setWsConnected(status.connected);
+    };
+    
+    const messageListener = (message) => {
+      // Only process messages for the current active project
+      if (message.projectId === activeProjectId) {
+        setMessages(prevMessages => [
+          ...prevMessages, 
+          {
+            id: message.id,
+            user: message.user,
+            text: message.text,
+            timestamp: formatTimestamp(message.timestamp)
+          }
+        ]);
+      }
+    };
+    
+    // Add listeners
+    websocketService.addListener('connection_status', connectionStatusListener);
+    websocketService.addListener('new_message', messageListener);
+    
+    // Clean up WebSocket connection and listeners when component unmounts
+    return () => {
+      websocketService.removeListener('connection_status', connectionStatusListener);
+      websocketService.removeListener('new_message', messageListener);
+      websocketService.disconnect();
+    };
   }, []);
-  
-  // When activeProjectId changes, fetch related data
+    // When activeProjectId changes, fetch related data
   useEffect(() => {
     if (activeProjectId) {
       fetchMessages(activeProjectId);
@@ -64,6 +101,9 @@ const Collaboration = () => {
       fetchFiles(activeProjectId);
       fetchMilestones(activeProjectId);
       fetchNotes(activeProjectId);
+      
+      // Join the project's WebSocket room
+      websocketService.joinProject(activeProjectId);
     }
   }, [activeProjectId]);
   
@@ -219,8 +259,7 @@ const Collaboration = () => {
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
     return dateObj.toLocaleDateString('en-US', options);
   };
-  
-  // Send a new message
+    // Send a new message
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!newMessage.trim() || !activeProjectId) return;
@@ -231,22 +270,32 @@ const Collaboration = () => {
         projectId: activeProjectId,
         text: newMessage,
         userId: 'tempUserId', // This would be the actual user ID in a real app
+        username: username, // Include username for WebSocket display
         timestamp: new Date()
       };
       
-      // Save to database
-      const response = await messageService.create(messageData);
-      
-      // Add to local state
-      setMessages([
-        ...messages,
-        {
-          id: response.data._id,
-          user: username,
-          text: newMessage,
-          timestamp: 'just now'
-        }
-      ]);
+      // Send via WebSocket (this will also save to database on the server)
+      if (wsConnected) {
+        websocketService.sendMessage(messageData);
+        
+        // Note: We don't need to manually update the messages state here
+        // because the WebSocket will broadcast back to all clients including this one
+      } else {
+        // Fallback to REST API if WebSocket is not connected
+        console.warn('WebSocket not connected, falling back to REST API');
+        const response = await messageService.create(messageData);
+        
+        // Add to local state when using REST API
+        setMessages([
+          ...messages,
+          {
+            id: response.data._id,
+            user: username,
+            text: newMessage,
+            timestamp: 'just now'
+          }
+        ]);
+      }
       
       setNewMessage('');
     } catch (error) {
@@ -641,11 +690,11 @@ const Collaboration = () => {
   };
   
   return (
-    <div className="collaboration-container">
-      <div className="collaboration-header">
+    <div className="collaboration-container">      <div className="collaboration-header">
         <h2>EventEase Collaboration Hub</h2>
         <div className="user-info">
-          <span className="active-indicator"></span>
+          <span className={`connection-indicator ${wsConnected ? 'connected' : 'disconnected'}`}></span>
+          <span className="connection-status">{wsConnected ? 'Connected' : 'Disconnected'}</span>
           <input
             type="text"
             className="username-input"
