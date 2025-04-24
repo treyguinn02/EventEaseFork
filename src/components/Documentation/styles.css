@@ -1,54 +1,101 @@
+:root {
+  --primary: #4caf50;
+  --primary-dark: #388e3c;
+  --secondary: #2196f3;
+  --neutral-bg: #f9fafc;
+  --panel-bg: rgba(255, 255, 255, 0.95);
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --transition: 0.3s ease-in-out;
+  --text-primary: #000000;
+  --text-secondary: #2c3e50;
+  --text-muted: #555555;
+}
+
 .documentation-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  background-color: var(--neutral-bg);
+  min-height: 100vh;
 }
 
 .documentation-header {
   text-align: center;
   margin-bottom: 3rem;
+  background: var(--panel-bg);
+  padding: 2.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
 }
 
 .documentation-header h1 {
-  font-size: 2.5rem;
-  color: #333;
+  font-size: 2.8rem;
+  background: linear-gradient(120deg, var(--primary), var(--secondary));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 1rem;
+  animation: gradient-shift 8s ease infinite;
+  background-size: 200% 200%;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .documentation-header p {
   font-size: 1.2rem;
-  color: #666;
+  color: #4a5568;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 /* Search Bar */
 .search-container {
   margin: 2rem auto;
   max-width: 600px;
+  position: relative;
 }
 
 .search-input {
   width: 100%;
-  padding: 12px 20px;
+  padding: 15px 25px;
   font-size: 1rem;
-  border: 2px solid #e1e1e1;
-  border-radius: 30px;
+  border: none;
+  border-radius: 9999px;
   background-color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
   transition: all 0.3s ease;
+  color: #333;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #4a90e2;
-  box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
+  border: none;
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.15);
+  transform: translateY(-2px);
 }
 
 /* Table of Contents */
 .table-of-contents {
-  background-color: #f5f7fa;
-  border-radius: 8px;
-  padding: 1.5rem 2rem;
+  background-color: var(--panel-bg);
+  border-radius: var(--radius);
+  padding: 2rem;
   margin-bottom: 3rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.table-of-contents:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
 .table-of-contents h2 {
@@ -60,66 +107,137 @@
 
 .table-of-contents ul {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
   padding: 0;
   list-style-type: none;
 }
 
 .table-of-contents li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.table-of-contents li::before {
+  content: '→';
+  color: var(--primary);
+  position: absolute;
+  left: -1.2rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.table-of-contents li:hover::before {
+  opacity: 1;
+  left: -1rem;
 }
 
 .table-of-contents a {
-  color: #4a90e2;
+  color: var(--secondary);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s;
+  transition: all 0.3s ease;
+  display: inline-block;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  background: transparent;
 }
 
 .table-of-contents a:hover {
-  color: #2c6cb0;
-  text-decoration: underline;
+  color: var(--primary);
+  background-color: rgba(76, 175, 80, 0.1);
+  transform: translateX(5px);
 }
 
 /* Documentation Sections */
 .documentation-section {
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
   scroll-margin-top: 80px; /* For smooth scrolling to section */
+  background-color: var(--panel-bg);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.documentation-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 .documentation-section h2 {
   font-size: 1.8rem;
-  color: #333;
+  background: linear-gradient(120deg, var(--primary), var(--secondary));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #e1e1e1;
+  padding-bottom: 0.8rem;
+  border-bottom: 2px solid rgba(76, 175, 80, 0.2);
+  display: inline-block;
 }
 
 .doc-card {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  border-left: 4px solid var(--primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.doc-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(76, 175, 80, 0.05), rgba(33, 150, 243, 0.05));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.doc-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.doc-card:hover::before {
+  opacity: 1;
 }
 
 .doc-card h3 {
-  font-size: 1.4rem;
-  color: #2c3e50;
-  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.2rem;
+  position: relative;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .doc-card h4 {
-  font-size: 1.1rem;
-  color: #3a4a5a;
-  margin: 1.2rem 0 0.5rem;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin: 1.5rem 0 0.8rem;
+  position: relative;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .doc-card p {
-  font-size: 1rem;
-  color: #555;
-  line-height: 1.6;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  letter-spacing: 0.01em;
+  font-weight: 400;
 }
 
 /* Steps Container */
@@ -138,15 +256,36 @@
 .steps-container li {
   margin-bottom: 0.5rem;
   line-height: 1.5;
+  color: #000000; /* Changed to black for better readability */
 }
 
 /* Pro Tips */
 .tip-box {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background-color: #fffbea;
-  border-left: 4px solid #ffd54f;
-  border-radius: 0 4px 4px 0;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #f0fff4;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.1);
+  overflow: hidden;
+}
+
+.tip-box::before {
+  content: '💡';
+  position: absolute;
+  top: 1rem;
+  left: 1.5rem;
+  font-size: 1.4rem;
+}
+
+.tip-box p {
+  padding-left: 2.5rem;
+  color: var(--text-primary);
+}
+
+.tip-box strong {
+  color: var(--text-secondary);
+  font-weight: 600;
 }
 
 /* Feature Highlights */
@@ -157,6 +296,12 @@
 .feature-highlights li {
   margin-bottom: 0.5rem;
   line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.feature-highlights strong {
+  color: var(--text-secondary);
+  font-weight: 600;
 }
 
 /* Permissions Table */
@@ -176,11 +321,13 @@
   padding: 0.8rem;
   text-align: left;
   border-bottom: 1px solid #e1e1e1;
+  color: var(--text-primary);
 }
 
 .permissions-table th {
   background-color: #f2f2f2;
   font-weight: 600;
+  color: var(--text-secondary);
 }
 
 .permissions-table tr:hover {
@@ -202,16 +349,28 @@
 
 .tutorial-link,
 .pdf-download {
-  display: inline-block;
-  color: #4a90e2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(120deg, var(--primary), var(--primary-dark));
+  color: white;
   font-weight: 500;
   text-decoration: none;
-  margin-top: 0.5rem;
+  margin-top: 1.5rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+  transition: all 0.3s ease;
+  width: 220px; /* Standardized width for buttons */
+  text-align: center;
 }
 
 .tutorial-link:hover,
 .pdf-download:hover {
-  text-decoration: underline;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+  background: linear-gradient(120deg, #43a047, #2e7d32);
 }
 
 .download-link {
@@ -318,7 +477,7 @@
 
 .faq-item h3 {
   font-size: 1.2rem;
-  color: #2c3e50;
+  color: var(--text-secondary);
   margin-bottom: 0.5rem;
   cursor: pointer;
   display: flex;
@@ -327,24 +486,29 @@
 
 .faq-toggle {
   font-size: 1.4rem;
-  color: #4a90e2;
+  color: var(--secondary);
 }
 
 .faq-answer {
   margin-top: 1rem;
   padding-left: 0.5rem;
   font-size: 1rem;
-  color: #555;
-  line-height: 1.6;
+  color: var(--text-primary);
+  line-height: 1.7;
 }
 
 .faq-answer a {
-  color: #4a90e2;
+  color: var(--primary);
   text-decoration: none;
+  font-weight: 500;
+  padding: 0.1rem 0.2rem;
+  border-radius: 3px;
+  transition: all 0.2s ease;
 }
 
 .faq-answer a:hover {
-  text-decoration: underline;
+  background-color: rgba(76, 175, 80, 0.1);
+  color: var(--primary-dark);
 }
 
 /* Troubleshooting */
@@ -403,26 +567,51 @@
 }
 
 .contact-btn {
-  padding: 0.8rem 1.5rem;
+  padding: 0.9rem 1.8rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 9999px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.contact-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: width 0.3s ease;
+  z-index: -1;
+}
+
+.contact-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.contact-btn:hover::before {
+  width: 100%;
 }
 
 .contact-btn.email {
-  background-color: #4a90e2;
+  background: linear-gradient(120deg, #4caf50, #388e3c);
   color: white;
 }
 
 .contact-btn.chat {
-  background-color: #5cb85c;
+  background: linear-gradient(120deg, #4caf50, #388e3c);
   color: white;
 }
 
 .contact-btn.phone {
-  background-color: #f0ad4e;
+  background: linear-gradient(120deg, #4caf50, #388e3c);
   color: white;
 }
 

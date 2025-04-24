@@ -505,43 +505,63 @@ const Collaboration = () => {
       console.error('Error adding milestone:', error);
     }
   };
-  
+    // Render chat panel (now separate from tab content)
+  const renderChatPanel = () => {
+    return (
+      <div className="chat-panel">
+        <div className="messages-container">
+          {loading.messages ? (
+            <p>Loading messages...</p>
+          ) : (
+            messages.map(message => (
+              <div 
+                key={message.id} 
+                className={`message ${message.user === username ? 'own-message' : ''}`}
+              >
+                <div className="message-header">
+                  <span className="message-user">{message.user}</span>
+                  <span className="message-time">{message.timestamp}</span>
+                </div>
+                <p className="message-text">{message.text}</p>
+              </div>
+            ))
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+        <form className="message-input-form" onSubmit={handleSendMessage}>
+          <input
+            type="text"
+            className="message-input"
+            value={newMessage}
+            onChange={e => setNewMessage(e.target.value)}
+            placeholder="Type your message..."
+            required
+          />
+          <button type="submit" className="send-button">Send</button>
+        </form>
+      </div>
+    );
+  };
+
   // Render tab content based on active tab
   const renderTabContent = () => {
     switch (activeTab) {
       case 'Chat':
         return (
-          <div className="chat-panel">
-            <div className="messages-container">
-              {loading.messages ? (
-                <p>Loading messages...</p>
-              ) : (
-                messages.map(message => (
-                  <div 
-                    key={message.id} 
-                    className={`message ${message.user === username ? 'own-message' : ''}`}
-                  >
-                    <div className="message-header">
-                      <span className="message-user">{message.user}</span>
-                      <span className="message-time">{message.timestamp}</span>
-                    </div>
-                    <p className="message-text">{message.text}</p>
-                  </div>
-                ))
-              )}
-              <div ref={messagesEndRef} />
+          <div className="chat-info-panel">
+            <h4>Chat Information</h4>
+            <p>This is the chat for project: <strong>{activeProject || 'None selected'}</strong></p>
+            <p>Use the chat panel at the bottom to communicate with your team.</p>
+            <div className="chat-stats">
+              <div className="chat-stat-item">
+                <span className="stat-label">Messages</span>
+                <span className="stat-value">{messages.length}</span>
+              </div>
+              <div className="chat-stat-item">
+                <span className="stat-label">Participants</span>
+                <span className="stat-value">{projects.find(p => p.id === activeProjectId)?.collaborators || 0}</span>
+              </div>
             </div>
-            <form className="message-input-form" onSubmit={handleSendMessage}>
-              <input
-                type="text"
-                className="message-input"
-                value={newMessage}
-                onChange={e => setNewMessage(e.target.value)}
-                placeholder="Type your message..."
-                required
-              />
-              <button type="submit" className="send-button">Send</button>
-            </form>
           </div>
         );
       
@@ -572,29 +592,37 @@ const Collaboration = () => {
             >
               + Upload File
             </button>
-            
-            {showFileUploadForm && (
+              {showFileUploadForm && (
               <div className="file-upload-form">
-                <form onSubmit={handleFileUpload}>
+                <form onSubmit={handleFileUpload} className="file-input-form">
                   {fileUploadError && <div className="error-message">{fileUploadError}</div>}
-                  <input 
-                    type="file" 
-                    ref={fileInputRef}
-                    className="file-input"
-                    onChange={(e) => setNewFile(e.target.files[0])}
-                  />
+                  <div className="file-input-container">
+                    <input 
+                      type="file" 
+                      ref={fileInputRef}
+                      className="file-input"
+                      onChange={(e) => setNewFile(e.target.files[0])}
+                      id="file-upload"
+                    />
+                    <label htmlFor="file-upload" className="file-input-label">
+                      Choose File
+                    </label>
+                    <span className="file-name">
+                      {newFile ? newFile.name : 'No file selected'}
+                    </span>
+                  </div>
                   <input 
                     type="text"
                     className="file-name-input"
                     value={newFileName}
                     onChange={(e) => setNewFileName(e.target.value)}
-                    placeholder="File name"
+                    placeholder="Enter file name..."
                     required
                   />
-                  <div className="form-buttons">
+                  <div className="file-form-buttons">
                     <button 
                       type="button" 
-                      className="cancel-btn"
+                      className="cancel-file-btn"
                       onClick={() => {
                         setShowFileUploadForm(false);
                         setNewFile(null);
@@ -604,7 +632,7 @@ const Collaboration = () => {
                     >
                       Cancel
                     </button>
-                    <button type="submit" className="upload-btn">Upload</button>
+                    <button type="submit" className="upload-file-submit-btn">Upload</button>
                   </div>
                 </form>
               </div>
@@ -637,10 +665,9 @@ const Collaboration = () => {
             >
               + Add Milestone
             </button>
-            
-            {showAddMilestoneForm && (
+              {showAddMilestoneForm && (
               <div className="add-milestone-form">
-                <form onSubmit={handleAddMilestone}>
+                <form onSubmit={handleAddMilestone} className="milestone-input-form">
                   <input 
                     type="date"
                     className="milestone-date-input"
@@ -653,20 +680,20 @@ const Collaboration = () => {
                     className="milestone-title-input"
                     value={newMilestoneTitle}
                     onChange={(e) => setNewMilestoneTitle(e.target.value)}
-                    placeholder="Milestone title"
+                    placeholder="Enter milestone title..."
                     required
                   />
                   <textarea 
                     className="milestone-description-input"
                     value={newMilestoneDescription}
                     onChange={(e) => setNewMilestoneDescription(e.target.value)}
-                    placeholder="Description"
+                    placeholder="Enter milestone description..."
                     required
                   />
-                  <div className="form-buttons">
+                  <div className="milestone-form-buttons">
                     <button 
                       type="button" 
-                      className="cancel-btn"
+                      className="cancel-milestone-btn"
                       onClick={() => {
                         setShowAddMilestoneForm(false);
                         setNewMilestoneDate('');
@@ -676,7 +703,7 @@ const Collaboration = () => {
                     >
                       Cancel
                     </button>
-                    <button type="submit" className="add-btn">Add</button>
+                    <button type="submit" className="add-milestone-submit-btn">Add</button>
                   </div>
                 </form>
               </div>
@@ -688,9 +715,9 @@ const Collaboration = () => {
         return null;
     }
   };
-  
-  return (
-    <div className="collaboration-container">      <div className="collaboration-header">
+    return (
+    <div className="collaboration-container">
+      <div className="collaboration-header">
         <h2>EventEase Collaboration Hub</h2>
         <div className="user-info">
           <span className={`connection-indicator ${wsConnected ? 'connected' : 'disconnected'}`}></span>
@@ -705,152 +732,156 @@ const Collaboration = () => {
         </div>
       </div>
       
-      <div className="collaboration-content">
-        <div className="projects-sidebar">
-          <h3>Your Projects</h3>
-          <div className="project-list">
-            {loading.projects ? (
-              <p>Loading projects...</p>
-            ) : (
-              projects.map(project => (
-                <div
-                  key={project.id}
-                  className={`project-item ${project.name === activeProject ? 'active' : ''}`}
-                  onClick={() => switchProject(project.id, project.name)}
-                >
-                  <div className="project-name">{project.name}</div>
-                  <div className="project-meta">
-                    <span>{project.collaborators} collaborators</span>
-                    <span>{project.lastActivity}</span>
+      <div className="collaboration-main">
+        <div className="collaboration-content">
+          <div className="projects-sidebar">
+            <h3>Your Projects</h3>
+            <div className="project-list">
+              {loading.projects ? (
+                <p>Loading projects...</p>
+              ) : (
+                projects.map(project => (
+                  <div
+                    key={project.id}
+                    className={`project-item ${project.name === activeProject ? 'active' : ''}`}
+                    onClick={() => switchProject(project.id, project.name)}
+                  >
+                    <div className="project-name">{project.name}</div>
+                    <div className="project-meta">
+                      <span>{project.collaborators} collaborators</span>
+                      <span>{project.lastActivity}</span>
+                    </div>
                   </div>
-                </div>
-              ))
-            )}
-          </div>
-          
-          {showNewProjectForm ? (
-            <form onSubmit={handleAddProject}>
-              <input
-                type="text"
-                value={newProjectName}
-                onChange={e => setNewProjectName(e.target.value)}
-                placeholder="Project name"
-                required
-                autoFocus
-              />
-              <div style={{ marginTop: '10px', display: 'flex', gap: '5px' }}>
-                <button
-                  type="button"
-                  onClick={() => setShowNewProjectForm(false)}
-                  style={{ flex: 1 }}
-                >
-                  Cancel
-                </button>
-                <button type="submit" style={{ flex: 1 }}>Create</button>
-              </div>
-            </form>
-          ) : (
-            <button
-              className="new-project-btn"
-              onClick={() => setShowNewProjectForm(true)}
-            >
-              + New Project
-            </button>
-          )}
-        </div>
-        
-        <div className="main-collaboration-area">
-          <div className="project-header">
-            <h3>{activeProject || 'Select a Project'}</h3>
-            <div className="collaboration-tabs">
-              <button
-                className={`tab-btn ${activeTab === 'Chat' ? 'active' : ''}`}
-                onClick={() => setActiveTab('Chat')}
-              >
-                Chat
-              </button>
-              <button
-                className={`tab-btn ${activeTab === 'Files' ? 'active' : ''}`}
-                onClick={() => setActiveTab('Files')}
-              >
-                Files
-              </button>
-              <button
-                className={`tab-btn ${activeTab === 'Timeline' ? 'active' : ''}`}
-                onClick={() => setActiveTab('Timeline')}
-              >
-                Timeline
-              </button>
+                ))
+              )}
             </div>
-          </div>
-          
-          <div className="collaboration-panels">
-            {renderTabContent()}
-          </div>
-        </div>
-        
-        <div className="collaboration-sidebar">
-          <div className="tasks-section">
-            <h3>Tasks</h3>
-            <div className="task-list">
-              {tasks.map(task => (
-                <div key={task.id} className={`collab-task ${task.status}`}>
-                  <div className="task-text">{task.text}</div>
-                  <div className="task-meta">
-                    <span>Assigned: {task.assigned}</span>
-                    <select
-                      className="task-status-select"
-                      value={task.status}
-                      onChange={e => changeTaskStatus(task.id, e.target.value)}
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="in-progress">In Progress</option>
-                      <option value="completed">Completed</option>
-                    </select>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            {showNewTaskForm ? (
-              <form onSubmit={handleAddTask}>
+              {showNewProjectForm ? (
+              <form onSubmit={handleAddProject} className="project-input-form">
                 <input
                   type="text"
-                  value={newTaskText}
-                  onChange={e => setNewTaskText(e.target.value)}
-                  placeholder="Task description"
+                  className="project-input"
+                  value={newProjectName}
+                  onChange={e => setNewProjectName(e.target.value)}
+                  placeholder="Enter project name..."
                   required
                   autoFocus
                 />
-                <div style={{ marginTop: '10px', display: 'flex', gap: '5px' }}>
+                <div className="project-form-buttons">
                   <button
                     type="button"
-                    onClick={() => setShowNewTaskForm(false)}
-                    style={{ flex: 1 }}
+                    className="cancel-project-btn"
+                    onClick={() => setShowNewProjectForm(false)}
                   >
                     Cancel
                   </button>
-                  <button type="submit" style={{ flex: 1 }}>Add</button>
+                  <button type="submit" className="add-project-submit-btn">Create</button>
                 </div>
               </form>
             ) : (
-              <div 
-                className="add-task-btn"
-                onClick={() => setShowNewTaskForm(true)}
+              <button
+                className="new-project-btn"
+                onClick={() => setShowNewProjectForm(true)}
               >
-                + Add Task
-              </div>
+                + New Project
+              </button>
             )}
           </div>
           
-          <div className="notes-section">
-            <h3>Shared Notes</h3>
-            <textarea
-              className="shared-notes"
-              value={notes}
-              onChange={handleUpdateNotes}
-              placeholder="Add project notes here..."
-            />
+          <div className="main-collaboration-area">
+            <div className="project-header">
+              <h3>{activeProject || 'Select a Project'}</h3>
+              <div className="collaboration-tabs">
+                <button
+                  className={`tab-btn ${activeTab === 'Chat' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('Chat')}
+                >
+                  Chat
+                </button>
+                <button
+                  className={`tab-btn ${activeTab === 'Files' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('Files')}
+                >
+                  Files
+                </button>
+                <button
+                  className={`tab-btn ${activeTab === 'Timeline' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('Timeline')}
+                >
+                  Timeline
+                </button>
+              </div>
+            </div>
+              <div className="collaboration-panels">
+              {renderTabContent()}
+            </div>
+            
+            {/* Add the Chat Panel which was defined but never used */}
+            {renderChatPanel()}
+          </div>
+          
+          <div className="collaboration-sidebar">
+            <div className="tasks-section">
+              <h3>Tasks</h3>
+              <div className="task-list">
+                {tasks.map(task => (
+                  <div key={task.id} className={`collab-task ${task.status}`}>
+                    <div className="task-text">{task.text}</div>
+                    <div className="task-meta">
+                      <span>Assigned: {task.assigned}</span>
+                      <select
+                        className="task-status-select"
+                        value={task.status}
+                        onChange={e => changeTaskStatus(task.id, e.target.value)}
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                      </select>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {showNewTaskForm ? (
+                <form onSubmit={handleAddTask} className="task-input-form">
+                  <input
+                    type="text"
+                    className="task-input"
+                    value={newTaskText}
+                    onChange={e => setNewTaskText(e.target.value)}
+                    placeholder="Enter new task..."
+                    required
+                    autoFocus
+                  />
+                  <div className="task-form-buttons">
+                    <button
+                      type="button"
+                      className="cancel-task-btn"
+                      onClick={() => setShowNewTaskForm(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button type="submit" className="add-task-submit-btn">Add</button>
+                  </div>
+                </form>
+              ) : (
+                <div 
+                  className="add-task-btn"
+                  onClick={() => setShowNewTaskForm(true)}
+                >
+                  + Add Task
+                </div>
+              )}
+            </div>
+            
+            <div className="notes-section">
+              <h3>Shared Notes</h3>
+              <textarea
+                className="shared-notes"
+                value={notes}
+                onChange={handleUpdateNotes}
+                placeholder="Add project notes here..."
+              />
+            </div>
           </div>
         </div>
       </div>

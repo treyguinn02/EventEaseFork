@@ -1,10 +1,38 @@
+/* filepath: c:\Users\charl\Documents\EventEase\src\components\TaskList\styles.css */
+:root {
+  --primary: #4caf50;
+  --primary-dark: #388e3c;
+  --secondary: #2196f3;
+  --neutral-bg: #f9fafc;
+  --panel-bg: #ffffff;
+  --radius: 16px;
+  --shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  --transition: 0.3s ease-in-out;
+}
+
 .task-list-container {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background-color: var(--panel-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.task-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.task-list-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  background: linear-gradient(120deg, var(--primary), var(--secondary));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .category-filter {
@@ -12,30 +40,12 @@
   gap: 10px;
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-<<<<<<< HEAD
-.category-filter button {
-  padding: 10px 20px;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  color: #64748b;
-}
-
-.category-filter button:hover {
-  background-color: #f1f5f9;
-  border-color: #cbd5e1;
-}
-
-.category-filter button.active {
-  background-color: #3b82f6;
-  color: white;
-  border-color: #3b82f6;
-=======
 /* General Button Styles */
 button {
   padding: 12px 18px; /* Consistent padding */
@@ -43,62 +53,53 @@ button {
   border: none; /* Remove borders */
   font-weight: 500;
   cursor: pointer;
-  transition: var(--transition, 0.3s ease-in-out); /* Smooth transitions */
+  transition: var(--transition); /* Smooth transitions */
 }
 
 /* Category Filter Buttons */
 .category-filter button {
   background: #f1f5f9; /* Light background */
   color: #64748b; /* Neutral text color */
-  box-shadow: var(--shadow, 0 2px 5px rgba(0, 0, 0, 0.1)); /* Subtle shadow */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 .category-filter button:hover {
   background: #e0f7fa; /* Light hover effect */
   color: #000; /* Darker text on hover */
+  transform: translateY(-2px);
 }
 
 .category-filter button.active {
-  background: linear-gradient(120deg, var(--primary, #4caf50), var(--secondary, #3b82f6)); /* Gradient background */
+  background: linear-gradient(120deg, var(--primary), var(--secondary)); /* Gradient background */
   color: white; /* White text */
-  box-shadow: var(--shadow, 0 4px 10px rgba(0, 0, 0, 0.2)); /* Stronger shadow */
->>>>>>> 0f95cbeb (Updated Design)
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+}
+
+/* Navigation container for slider buttons */
+.slider-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .task-slider-container {
-  display: flex;
-  align-items: center;
+  position: relative;
   margin: 1.5rem 0;
   overflow: hidden;
 }
 
 .slider-button {
-<<<<<<< HEAD
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.slider-button:disabled {
-  background-color: #cccccc;
-=======
-  background: linear-gradient(120deg, var(--primary, #4caf50), var(--primary-dark, #388e3c)); /* Gradient background */
+  background: linear-gradient(120deg, var(--primary), var(--primary-dark)); /* Gradient background */
   color: white;
   border-radius: 50%; /* Fully rounded */
   width: 48px; /* Match the size of the send button */
   height: 48px;
-  box-shadow: var(--shadow, 0 4px 10px rgba(0, 0, 0, 0.2)); /* Subtle shadow */
-  transition: var(--transition, 0.3s ease-in-out);
+  box-shadow: var(--shadow); /* Subtle shadow */
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .slider-button:hover {
@@ -108,7 +109,6 @@ button {
 
 .slider-button:disabled {
   background: #cccccc; /* Disabled state */
->>>>>>> 0f95cbeb (Updated Design)
   cursor: not-allowed;
 }
 
@@ -124,20 +124,22 @@ button {
 
 .category-column {
   flex: 0 0 300px;
-  padding: 1.5rem;
-  background-color: #f8fafc;
-  border-radius: 12px;
+  padding: 1.8rem;
+  background-color: var(--panel-bg);
+  border-radius: var(--radius);
   margin-right: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
   min-height: 400px;
   display: flex;
   flex-direction: column;
 }
 
 .category-column h3 {
-  border-bottom: 2px solid #4caf50;
-  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 0.8rem;
   margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: var(--primary-dark);
 }
 
 .task-items {
@@ -160,80 +162,95 @@ button {
 }
 
 .task-items::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
+  background: var(--primary);
   border-radius: 3px;
 }
 
 .add-task-form {
   margin-top: 2rem;
   padding: 2rem;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  border: 1px solid #f0f0f0;
+  background-color: var(--panel-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(76, 175, 80, 0.1);
 }
 
 .add-task-form h3 {
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   color: #333;
+  font-size: 1.2rem;
+  border-bottom: 2px solid rgba(76, 175, 80, 0.2);
+  padding-bottom: 0.5rem;
+  display: inline-block;
 }
 
 .add-task-form form {
   display: flex;
-  gap: 10px;
+  gap: 15px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .add-task-form input {
   flex: 1 0 200px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 12px 18px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius);
   font-size: 1rem;
+  transition: var(--transition);
+  background-color: var(--neutral-bg);
+}
+
+.add-task-form input:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+  background-color: white;
 }
 
 .add-task-form select {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 12px 18px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius);
   font-size: 1rem;
+  transition: var(--transition);
+  background-color: var(--neutral-bg);
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 1em;
+  padding-right: 2.5rem;
+}
+
+.add-task-form select:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+  background-color: white;
 }
 
 .add-task-form button {
-<<<<<<< HEAD
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
-}
-
-.add-task-form button:hover {
-  background-color: #388e3c;
-=======
-  background: linear-gradient(120deg, var(--primary, #4caf50), var(--primary-dark, #388e3c)); /* Gradient background */
+  background: linear-gradient(120deg, var(--primary), var(--primary-dark)); /* Gradient background */
   color: white;
   border-radius: 9999px; /* Fully rounded corners */
-  padding: 12px 18px; /* Consistent padding */
+  padding: 12px 24px; /* Consistent padding */
   font-weight: 500;
   cursor: pointer;
-  transition: var(--transition, 0.3s ease-in-out);
-  box-shadow: var(--shadow, 0 4px 10px rgba(0, 0, 0, 0.2)); /* Subtle shadow */
+  transition: var(--transition);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
 .add-task-form button:hover {
-  transform: scale(1.1); /* Slight scaling on hover */
+  transform: scale(1.05); /* Slight scaling on hover */
   box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3); /* Stronger shadow on hover */
->>>>>>> 0f95cbeb (Updated Design)
 }
 
 @media (max-width: 768px) {
   .add-task-form form {
     flex-direction: column;
+    align-items: stretch;
   }
   
   .category-filter {
@@ -248,21 +265,29 @@ button {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .task-modal {
-  background-color: white;
+  background-color: var(--panel-bg);
   padding: 2rem;
-  border-radius: 12px;
+  border-radius: var(--radius);
   width: 500px;
   max-width: 95%;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  animation: modalFadeIn 0.3s ease;
+  box-shadow: var(--shadow);
+  animation: modalFadeIn 0.4s ease;
+  border: 1px solid rgba(76, 175, 80, 0.1);
 }
 
 @keyframes modalFadeIn {
@@ -277,32 +302,33 @@ button {
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 1.2rem;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+  margin-bottom: 0.6rem;
+  font-weight: 500;
+  color: #333;
 }
 
 .form-group input,
 .form-group select {
   width: 100%;
   padding: 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: all 0.2s ease;
-  background-color: #f8fafc;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  transition: var(--transition);
+  background-color: var(--neutral-bg);
 }
 
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: var(--primary);
   background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
 }
 
 .modal-actions {
@@ -314,51 +340,32 @@ button {
 
 .save-btn,
 .cancel-btn {
-  padding: 8px 16px;
+  padding: 12px 20px;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-weight: 500;
+  border-radius: 9999px;
+  transition: var(--transition);
 }
 
 .save-btn {
-<<<<<<< HEAD
-  background-color: #4caf50;
+  background: linear-gradient(120deg, var(--primary), var(--primary-dark)); /* Gradient background */
   color: white;
-}
-
-.cancel-btn {
-  background-color: #f44336;
-  color: white;
-=======
-  background: linear-gradient(120deg, var(--primary, #4caf50), var(--primary-dark, #388e3c)); /* Gradient background */
-  color: white;
-  border-radius: 9999px; /* Fully rounded corners */
-  padding: 10px 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition, 0.3s ease-in-out);
-  box-shadow: var(--shadow, 0 4px 10px rgba(0, 0, 0, 0.2)); /* Subtle shadow */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
 .save-btn:hover {
-  transform: scale(1.1); /* Slight scaling on hover */
+  transform: scale(1.05); /* Slight scaling on hover */
   box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3); /* Stronger shadow on hover */
 }
 
 .cancel-btn {
   background: #f44336; /* Red background for cancel */
   color: white;
-  border-radius: 9999px; /* Fully rounded corners */
-  padding: 10px 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition, 0.3s ease-in-out);
-  box-shadow: var(--shadow, 0 4px 10px rgba(0, 0, 0, 0.2)); /* Subtle shadow */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
 .cancel-btn:hover {
-  transform: scale(1.1); /* Slight scaling on hover */
+  transform: scale(1.05); /* Slight scaling on hover */
   box-shadow: 0 8px 20px rgba(244, 67, 54, 0.3); /* Stronger shadow on hover */
->>>>>>> 0f95cbeb (Updated Design)
 }

@@ -7,6 +7,12 @@ const Login = ({ onLoginSuccess, onSignup }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  // Set loaded state after component mounts to trigger animations
+  React.useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -58,14 +64,17 @@ const Login = ({ onLoginSuccess, onSignup }) => {
       },
       token: 'email-login-token'
     };
-    
-    onLoginSuccess(userData);
+      onLoginSuccess(userData);
   };
+  
   return (
     <GoogleOAuthProvider clientId="945543904789-6l24jog44pla67i2q9a223lv7upgapq6.apps.googleusercontent.com">
-      <div className="login-container">
-        <h1>Welcome to EventEase</h1>
-        <p>Sign in to continue</p>
+      <div className={`login-container ${isLoaded ? 'loaded' : ''}`}>
+        <div className="logo-container">
+          <img src="/EventEase.svg" alt="EventEase Logo" className="logo" />
+        </div>
+        <h1 className="welcome-text">Welcome to EventEase</h1>
+        <p className="subtitle">Sign in to continue</p>
         
         {/* Email/Password Login Form */}
         <form onSubmit={handleEmailLogin} className="login-form">

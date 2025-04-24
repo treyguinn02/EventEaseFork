@@ -1,0 +1,58 @@
+/* Height fixes for the collaboration component */
+
+/* Make the main collaboration area fill the available height */
+.main-collaboration-area {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: calc(100vh - 120px); /* Accounting for header and padding */
+}
+
+/* Make the chat panel fill the available height */
+.chat-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  min-height: 500px; /* Minimum height */
+  position: relative;
+  overflow: hidden; /* Prevent overflow */
+}
+
+/* Ensure messages container expands to fill space but allows scrolling */
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  height: calc(100% - 85px); /* Account for the input form height */
+  padding-bottom: 20px;
+}
+
+/* Fix the message input form to the bottom */
+.message-input-form {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  padding: 15px 20px;
+  border-top: 1px solid rgba(76, 175, 80, 0.1);
+  z-index: 10;
+  margin-top: auto;
+}
+
+/* Ensure collaboration panels container doesn't overflow */
+.collaboration-panels {
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+
+/* Make the collaboration-content fill the available height */
+.collaboration-content {
+  min-height: calc(100vh - 88px); /* Account for header height */
+}
+
+/* Ensure consistent height for the other panels */
+.files-panel,
+.timeline-panel {
+  min-height: 300px;
+}
