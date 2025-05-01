@@ -329,3 +329,36 @@
   50% { transform: translate(100px, 50px) rotate(5deg); }
   100% { transform: translate(50px, 100px) rotate(10deg); }
 }
+
+/* Container for animated images */
+.animated-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1; /* Place behind other content */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Animated images */
+.animated-image {
+  width: 150px; /* Adjust size as needed */
+  height: auto;
+  margin-bottom: 20px;
+  animation: moveDown 10s linear infinite;
+  opacity: 0.8; /* Slight transparency */
+}
+
+/* Keyframe animation */
+@keyframes moveDown {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}

@@ -70,6 +70,19 @@ const Login = ({ onLoginSuccess, onSignup }) => {
   return (
     <GoogleOAuthProvider clientId="945543904789-6l24jog44pla67i2q9a223lv7upgapq6.apps.googleusercontent.com">
       <div className={`login-container ${isLoaded ? 'loaded' : ''}`}>
+        
+        {/* Animated Background Section */}
+        <div className="animated-background">
+          {[...Array(10)].map((_, index) => (
+            <img
+              key={index}
+              src={`/images/image-${index + 1}.jpg`}
+              alt={`Background ${index + 1}`}
+              className="animated-image"
+            />
+          ))}
+        </div>
+
         <div className="logo-container">
           <img src="/EventEase.svg" alt="EventEase Logo" className="logo" />
         </div>
