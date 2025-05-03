@@ -69,72 +69,62 @@ const Login = ({ onLoginSuccess, onSignup }) => {
   
   return (
     <GoogleOAuthProvider clientId="945543904789-6l24jog44pla67i2q9a223lv7upgapq6.apps.googleusercontent.com">
-      <div className={`login-container ${isLoaded ? 'loaded' : ''}`}>
-        
-        {/* Animated Background Section */}
-        <div className="animated-background">
-          {[...Array(10)].map((_, index) => (
-            <img
-              key={index}
-              src={`/images/image-${index + 1}.jpg`}
-              alt={`Background ${index + 1}`}
-              className="animated-image"
-            />
-          ))}
+      <div className="login-main">
+        <div className={`login-container ${isLoaded ? 'loaded' : ''}`}>
+          <div className="logo-container">
+            <img src="/EventEase.svg" alt="EventEase Logo" className="logo" />
+          </div>
+          <h1 className="welcome-text">Welcome to EventEase</h1>
+          <p className="subtitle">Sign in to continue</p>
+          <form onSubmit={handleEmailLogin} className="login-form">
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
+            <div className="form-group">
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={email}
+                onChange={handleEmailChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password:</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={password}
+                onChange={handlePasswordChange}
+                required
+              />
+            </div>
+            <button type="submit" className="login-button">
+              Sign In
+            </button>
+          </form>
+          <div className="divider">
+            <span>or</span>
+          </div>
+          <div className="google-login-container">
+            <GoogleLogin onSuccess={handleGoogleSuccess} onError={handleGoogleError} />
+          </div>
+          <button
+            className="signup-button"
+            onClick={onSignup}
+            style={{ marginTop: '20px' }}
+          >
+            Create Account
+          </button>
+        </div>
+        <div class="loop-container">
+          <img src="/images/image1.jpg" class="loop-image first" />
+          <img src="/images/image1.jpg" class="loop-image second" />
         </div>
 
-        <div className="logo-container">
-          <img src="/EventEase.svg" alt="EventEase Logo" className="logo" />
-        </div>
-        <h1 className="welcome-text">Welcome to EventEase</h1>
-        <p className="subtitle">Sign in to continue</p>
-        
-        {/* Email/Password Login Form */}
-        <form onSubmit={handleEmailLogin} className="login-form">
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
-          <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={handleEmailChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={password}
-              onChange={handlePasswordChange}
-              required
-            />
-          </div>
-          <button type="submit" className="login-button">
-            Sign In
-          </button>
-        </form>
-        
-        <div className="divider">
-          <span>or</span>
-        </div>
-        
-        {/* Google Login */}
-        <div className="google-login-container">
-          <GoogleLogin onSuccess={handleGoogleSuccess} onError={handleGoogleError} />
-        </div>
-        
-        <button
-          className="signup-button"
-          onClick={onSignup}
-          style={{ marginTop: '20px' }} // Inline style for spacing
-        >
-          Create Account
-        </button>
+
+
       </div>
     </GoogleOAuthProvider>
   );
